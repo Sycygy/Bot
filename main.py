@@ -1,7 +1,5 @@
 import os
 import discord
-import requests
-import json
 import random
 from discord.ext import commands
 
@@ -16,15 +14,21 @@ starter_encouragments = ['Ánimo!', 'Todo irá bien!']
 
 #Comandos
 @bot.command()
-async def hola(ctx):
-    print('hola')
+async def start(ctx, arg1, arg2):
+    print('Has escrito: ')
+    print(arg1)
+    print(arg2)
 
 
 @bot.command()
-async def crear_canal(ctx):
-    guild = ctx.guild
-    print(guild)
-    channel = await guild.create_text_channel('ejmplo')
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+
+
+@bot.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
 
 
 #Eventos
@@ -33,7 +37,6 @@ async def on_ready():  # mierda que hay que poner
     print('We have logged in as {0.user}'.format(bot))
 
     guild_name = bot.guilds[0]
-    print(guild_name)
     text_channel = guild_name.text_channels
 
     for i in range(0, len(text_channel)):
@@ -65,11 +68,6 @@ async def on_message(message):  # funcion para los comandos
             if w in sad_words:
                 await message.channel.send(random.choice(starter_encouragments)
                                            )
-
-        if message.content.startswith('!start'):
-            channel = message.author.voice
-            print(channel)
-            await channel.connect()
 
     #await bot.process_commands(message)
 
