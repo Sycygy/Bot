@@ -14,14 +14,27 @@ sad_words = ['suspenso', 'mal', 'agobiado']
 starter_encouragments = ['Ánimo!', 'Todo irá bien!']
 
 
-@client.event
-async def on_ready():  # mierda que hay que poner
-    print('We have logged in as {0.user}'.format(client))
+#Comandos
+@bot.command()
+async def hola(ctx):
+    print('hola')
 
-    guild_name = client.guilds[0]
+
+@bot.command()
+async def crear_canal(ctx):
+    guild = ctx.guild
+    print(guild)
+    channel = await guild.create_text_channel('ejmplo')
+
+
+#Eventos
+@bot.event
+async def on_ready():  # mierda que hay que poner
+    print('We have logged in as {0.user}'.format(bot))
+
+    guild_name = bot.guilds[0]
     print(guild_name)
     text_channel = guild_name.text_channels
-    print(len(text_channel))
 
     for i in range(0, len(text_channel)):
         var = 0
@@ -34,7 +47,7 @@ async def on_ready():  # mierda que hay que poner
         await guild_name.create_text_channel('configuracion-pomodoro')
 
 
-@client.event
+@bot.listen()
 async def on_message(message):  # funcion para los comandos
     if message.author == client.user:
         return
@@ -54,19 +67,11 @@ async def on_message(message):  # funcion para los comandos
                                            )
 
         if message.content.startswith('!start'):
-            # print(message.member)
             channel = message.author.voice
             print(channel)
             await channel.connect()
 
-    await bot.process_commands(message)
+    #await bot.process_commands(message)
 
 
-@bot.command()
-async def hola(ctx):
-    print('hola')
-
-
-##keep_alive()
-
-client.run(os.environ['TOKEN'])  # para correr el bot
+bot.run(os.environ['TOKEN'])  # para correr el bot
