@@ -20,15 +20,18 @@ async def start(ctx, study_time, rest_time):
         channel = ctx.author.voice.channel
         await channel.connect()
         while ctx.voice_client != None:
-          await ctx.message.channel.send(
-                'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
-          time.sleep(int(
-                study_time))  # falta multiplicar por 60 para que sean minutos
-          await ctx.message.channel.send(
-                'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
-          time.sleep(
-                int(rest_time))  # falta multiplicar por 60 para que sean minutos
-        
+          if ctx.voice_client != None:
+            await ctx.message.channel.send(
+                  'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
+            time.sleep(int(
+                  study_time))  # falta multiplicar por 60 para que sean minutos
+          else: break
+          if ctx.voice_client != None:
+            await ctx.message.channel.send(
+                  'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
+            time.sleep(
+                  int(rest_time))  # falta multiplicar por 60 para que sean minutos
+          else: break
 
 
 @bot.command()
