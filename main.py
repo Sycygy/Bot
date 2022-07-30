@@ -20,7 +20,7 @@ async def start(ctx, study_time, rest_time):
         channel = ctx.author.voice.channel
         await channel.connect()
         while ctx.voice_client != None:
-          if ctx.voice_client != None:
+          if ctx.voice_client != None: # creo que este if no es necesario pero tengo sueño para pensarlo
             await ctx.message.channel.send(
                   'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
             await asyncio.sleep(int(
@@ -33,14 +33,20 @@ async def start(ctx, study_time, rest_time):
             await asyncio.sleep(
                   int(rest_time))  # falta multiplicar por 60 para que sean minutos
           else: break
-
+    else:    # esto no se si quieres que lo haga
+      await ctx.message.channel.send('Los comandos en configuracion-pomodoro !!!')
 
 @bot.command()
 async def end(ctx):
     if str(ctx.message.channel) == 'configuracion-pomodoro':
+      if ctx.voice_client != None:
         await ctx.voice_client.disconnect()
+      else:
+        await ctx.message.channel.send(
+                  'No estás conectado a ningun canal de voz!!')
+    else:    # esto no se si quieres que lo haga
+      await ctx.message.channel.send('Los comandos en configuracion-pomodoro !!!')
         
-        # aqui da un error, tenemos que gestionar una excepción 
 
 
 #Eventos
