@@ -1,7 +1,7 @@
 import os
 import discord
 import random
-import time
+import asyncio
 from discord.ext import commands
 
 ##from keep_alive import keep_alive  # para mantener al bot online
@@ -23,13 +23,14 @@ async def start(ctx, study_time, rest_time):
           if ctx.voice_client != None:
             await ctx.message.channel.send(
                   'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
-            time.sleep(int(
+            await asyncio.sleep(int(
                   study_time))  # falta multiplicar por 60 para que sean minutos
           else: break
+          
           if ctx.voice_client != None:
             await ctx.message.channel.send(
                   'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
-            time.sleep(
+            await asyncio.sleep(
                   int(rest_time))  # falta multiplicar por 60 para que sean minutos
           else: break
 
@@ -41,21 +42,6 @@ async def end(ctx):
         
         # aqui da un error, tenemos que gestionar una excepción 
 
-'''
-@bot.command()
-async def pomodoro(ctx, study_time, rest_time):
-    
-    if str(ctx.message.channel) == 'configuracion-pomodoro':
-        while ctx.voice_client == ctx.author.voice.channel:
-            await ctx.message.channel.send(
-                'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
-            time.sleep(int(
-                study_time))  #falta multiplicar por 60 para que seanminutos
-            await ctx.message.channel.send(
-                'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
-            time.sleep(
-                int(rest_time))  #falta multiplicar por 60 para que seanminutos
-'''
 
 #Eventos
 @bot.event
