@@ -1,6 +1,7 @@
 import os
 import discord
 import random
+import time
 from discord.ext import commands
 
 ##from keep_alive import keep_alive  # para mantener al bot online
@@ -14,22 +15,44 @@ starter_encouragments = ['Ánimo!', 'Todo irá bien!']
 
 #Comandos
 @bot.command()
-async def start(ctx, arg1, arg2):
-    print('Has escrito: ')
-    print(arg1)
-    print(arg2)
+async def start(ctx, study_time, rest_time):
+    if str(ctx.message.channel) == 'configuracion-pomodoro':
+        channel = ctx.author.voice.channel
+        await channel.connect()
+        while ctx.voice_client != None:
+          await ctx.message.channel.send(
+                'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
+          time.sleep(int(
+                study_time))  # falta multiplicar por 60 para que sean minutos
+          await ctx.message.channel.send(
+                'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
+          time.sleep(
+                int(rest_time))  # falta multiplicar por 60 para que sean minutos
+        
 
 
 @bot.command()
-async def join(ctx):
-    channel = ctx.author.voice.channel
-    await channel.connect()
+async def end(ctx):
+    if str(ctx.message.channel) == 'configuracion-pomodoro':
+        await ctx.voice_client.disconnect()
+        
+        # aqui da un error, tenemos que gestionar una excepción 
 
-
+'''
 @bot.command()
-async def leave(ctx):
-    await ctx.voice_client.disconnect()
-
+async def pomodoro(ctx, study_time, rest_time):
+    
+    if str(ctx.message.channel) == 'configuracion-pomodoro':
+        while ctx.voice_client == ctx.author.voice.channel:
+            await ctx.message.channel.send(
+                'INICIANDO POMODORO DE {} MINUTOS'.format(study_time))
+            time.sleep(int(
+                study_time))  #falta multiplicar por 60 para que seanminutos
+            await ctx.message.channel.send(
+                'INICIANDO DESCANSO DE {} MINUTOS'.format(rest_time))
+            time.sleep(
+                int(rest_time))  #falta multiplicar por 60 para que seanminutos
+'''
 
 #Eventos
 @bot.event
@@ -51,7 +74,7 @@ async def on_ready():  # mierda que hay que poner
 
 
 @bot.listen()
-async def on_message(message):  # funcion para los comandos
+async def on_message(message):
     if message.author == client.user:
         return
 
